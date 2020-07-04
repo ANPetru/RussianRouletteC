@@ -9,19 +9,12 @@ Russian roulette game made in C
 
 
 <a name="about"/>
-**About**
-  
-Lorem impsum
 
 
 <a name="demo"/>
-**Demo**
-  
-![Demo Gameplay](https://j.gifs.com/mOmD8r.gif)
 
-Lorem ipsum
+![Demo Gameplay](https://j.gifs.com/mOmD8r.gif)
 
 
 <a name="play"/>
   
-**How to play**
