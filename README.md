@@ -1,4 +1,7 @@
 # RussianRouletteC
 Russian roulette game made in C
 
-**"./russianroulette" to start the game.**
+
+![Demo Gameplay](https://j.gifs.com/mOmD8r.gif)
+
+
