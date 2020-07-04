@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include <string.h>
-  #include <unistd.h>
+#include <unistd.h>
 #ifndef NULL
 #define NULL 0
 #endif
@@ -53,6 +53,8 @@ int main(int argc, char const *argv[])
     while (!gameOver){
         playTurn();
     }
+    char exitChar [20];
+     fgets(exitChar,20,stdin);
     return 0;
 }
 
@@ -168,7 +170,7 @@ void checkWin() {
         printPlayers();
         printf("---------------------------------------\n\n\n");
         printf("\033[1;32m");
-        printf("\t%s WON THE GAME!\n\n\n\n", players[currentPlayer]);
+        printf("\t%s WON THE GAME!\n\n\n\n", players[currentPlayer].name);
         printf("\033[0m");
 
         gameOver = true;
@@ -178,15 +180,15 @@ void checkWin() {
 void printShooting (int miliseconds) {
     printf("\033[1;36m");
 
-    printf("Shooting %s", players[currentPlayer]);
+    printf("Shooting %s", players[currentPlayer].name);
     fflush(stdout);
-    usleep(miliseconds* 1000);
+    usleep(miliseconds * 1000);
     printf(".");
     fflush(stdout);
     usleep(miliseconds * 1000);
     printf(".");
     fflush(stdout);
-    usleep(miliseconds* 1000);
+    usleep(miliseconds * 1000);
     printf(".");
     fflush(stdout);
     printf("\033[0m");
