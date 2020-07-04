@@ -4,7 +4,7 @@ Russian roulette game for command line made in C.
 
 ## Index
 
-[#. About](#about)
+[1. About](#about)
 
 [2. Demo](#demo)
 
