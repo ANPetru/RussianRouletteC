@@ -16,14 +16,15 @@ struct player
     bool isDead;
 };
 
+int getNumPlayers();
 void initPlayers();
 void printPlayers();
 void playTurn();
-void getNextPlayer();
+void setNextPlayer();
 void initGun();
 void killPlayer();
 void checkWin();
-void printShooting (int miliseconds);
+void shootPlayer ();
 
 int numPlayers;
 int currentPlayer = 0;
@@ -36,26 +37,55 @@ int bullet;
 int main(int argc, char const *argv[])
 {
     system("cls");
-    bool exit = false;
-    while (!exit){
-        char line [20];
-        printf("Enter number of players(2-8):\n");
-        fgets(line,20,stdin);
-        numPlayers = atoi(line);
-        if (numPlayers >=2 && numPlayers <=8){
-            exit = true;
-        }
-        system("cls");
-    }
-    players = malloc(sizeof(player_t) * numPlayers);
     initPlayers();
     initGun();
     while (!gameOver){
         playTurn();
     }
     char exitChar [20];
-     fgets(exitChar,20,stdin);
+    fgets(exitChar,20,stdin);
     return 0;
+}
+
+void initPlayers(){
+    numPlayers = getNumPlayers();
+    players = malloc(sizeof(player_t) * numPlayers);
+    for(int i = 0; i < numPlayers; i++){
+        printf("Enter name for Player %d:\n", i+1);
+        char name [10];
+        fgets(name, 10,stdin);
+        int len=strlen(name); 
+        if(name[len-1]=='\n')
+            name[len-1]='\0';
+        players[i].name = malloc(sizeof(char) * 10);
+        strcpy(players[i].name, name);
+        players[i].isDead = false;
+        system("cls");
+    }
+}
+
+int getNumPlayers() {
+    int np;
+    bool gotNumberOfPlayers = false;
+    while (!gotNumberOfPlayers){
+        char line [20];
+        printf("Enter number of players(2-8):\n");
+        fgets(line,20,stdin);
+        np = atoi(line);
+        if (np >=2 && np <=8){
+            gotNumberOfPlayers = true;
+        }
+        system("cls");
+    }
+    return np;
+}
+
+void initGun(){
+    for (int i = 0; i< sizeof(bullets)/sizeof(bool);i++){
+        bullets[i] = true;
+    }
+    srand(time(NULL));
+    bullet = (rand() % (0 - 5 + 1)) + 0; 
 }
 
 void playTurn(){
@@ -71,7 +101,7 @@ void playTurn(){
             exit = bullets[randBullet];
         }
         system("cls");
-        printShooting(400);
+        shootPlayer();
         if (randBullet == bullet){
             printf("\033[1;31m");
             printf("BOOM!\n");
@@ -83,7 +113,7 @@ void playTurn(){
             printf("\033[0m");
             bullets[randBullet] = false;
         }
-        getNextPlayer();
+        setNextPlayer();
     } else if (atoi(line) == 2){
         system("cls");
         printPlayers();
@@ -101,15 +131,9 @@ void killPlayer(){
     initGun();
 }
 
-void initGun(){
-    for (int i = 0; i< sizeof(bullets)/sizeof(bool);i++){
-        bullets[i] = true;
-    }
-    srand(time(NULL));
-    bullet = (rand() % (0 - 5 + 1)) + 0; 
-}
 
-void getNextPlayer(){
+
+void setNextPlayer(){
     int tempInd = currentPlayer +1;
     bool exit = false;
     while (!exit){
@@ -125,21 +149,6 @@ void getNextPlayer(){
         }
     }
     currentPlayer = tempInd;
-}
-
-void initPlayers(){
-    for(int i = 0; i < numPlayers; i++){
-        printf("Enter name for Player %d:\n", i+1);
-        char name [10];
-        fgets(name, 10,stdin);
-        int len=strlen(name); 
-        if(name[len-1]=='\n')
-            name[len-1]='\0';
-        players[i].name = malloc(sizeof(char) * 10);
-        strcpy(players[i].name, name);
-        players[i].isDead = false;
-        system("cls");
-    }
 }
 
 void printPlayers(){
@@ -165,7 +174,7 @@ void checkWin() {
         }
     }
     if (playersAlive == 1) {
-        getNextPlayer();
+        setNextPlayer();
         printf("\n---------------------------------------\n");
         printPlayers();
         printf("---------------------------------------\n\n\n");
@@ -177,18 +186,19 @@ void checkWin() {
     }
 }
 
-void printShooting (int miliseconds) {
+void shootPlayer () {
+    int timeToSleep = 400 * 1000;
     printf("\033[1;36m");
 
     printf("Shooting %s", players[currentPlayer].name);
     fflush(stdout);
-    usleep(miliseconds * 1000);
+    usleep(timeToSleep);
     printf(".");
     fflush(stdout);
-    usleep(miliseconds * 1000);
+    usleep(timeToSleep);
     printf(".");
     fflush(stdout);
-    usleep(miliseconds * 1000);
+    usleep(timeToSleep);
     printf(".");
     fflush(stdout);
     printf("\033[0m");
